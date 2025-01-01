@@ -247,29 +247,55 @@ export default function Todos() {
             </div>
 
             <style jsx>{`
-                .showTodos .card {
-                    max-width: 1100px;
-                    margin: 0 auto;
-                    margin-bottom: 30px;
-                    padding: 10px 15px;
-                }
+    .showTodos .card {
+        max-width: 1100px;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        padding: 10px 15px;
+        overflow-x: auto;
+    }
 
-                @media (max-width: 768px) {
-                    .showTodos .card {
-                        max-width: 70%;
-                        padding: 10px 15px;
-                    }
+    table {
+        width: 100%;
+        overflow-x: auto;
+        display: block;
+    }
 
-                    .modal-body input, .modal-body textarea {
-                        font-size: 14px;
-                        padding: 8px;
-                    }
+    th, td {
+        white-space: nowrap;
+    }
 
-                    .modal-footer button {
-                        font-size: 14px;
-                    }
-                }
-            `}</style>
+    @media (max-width: 768px) {
+        .showTodos .card {
+            max-width: 100%;
+            padding: 10px 15px;
+        }
+
+        .modal-body input, .modal-body textarea {
+            font-size: 14px;
+            padding: 8px;
+        }
+
+        .modal-footer button {
+            font-size: 14px;
+        }
+
+        table {
+            font-size: 12px;
+        }
+
+        .btn {
+            font-size: 12px;
+            padding: 6px 10px;
+        }
+
+        .modal-dialog {
+            max-width: 95%;
+            margin: 0 auto;
+        }
+    }
+`}</style>
+
         </>
     )
 }
