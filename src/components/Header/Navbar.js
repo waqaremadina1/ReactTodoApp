@@ -1,12 +1,12 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // useNavigate ko import kiya
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 
 export default function Navbar() {
     const { isAuthenticated, dispatch, user } = useAuthContext();
-    const navigate = useNavigate(); // useNavigate hook ko initialize kiya
+    const navigate = useNavigate();
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -14,19 +14,21 @@ export default function Navbar() {
         signOut(auth)
             .then(() => {
                 dispatch({ type: 'LOGOUT' });
-                navigate('/authentication/login'); // Logout ke baad user ko login page par navigate kiya
+                navigate('/authentication/login');
             })
             .catch((error) => {
                 window.toastify('Something went wrong while logging out', 'error');
             });
     };
 
-    const handleNavigation = (path) => {
-        // Navigate karega aur offcanvas ko close karega
+    const handleMobileNavigation = (path) => {
+        if (window.innerWidth <= 768) {
+            // Mobile devices ke liye navigate aur offcanvas close karna
+            document.querySelector('.offcanvas').classList.remove('show');
+            document.querySelector('.offcanvas-backdrop')?.remove();
+            document.body.classList.remove('offcanvas-backdrop');
+        }
         navigate(path);
-        document.querySelector('.offcanvas').classList.remove('show');
-        document.querySelector('.offcanvas-backdrop')?.remove();
-        document.body.classList.remove('offcanvas-backdrop');
     };
 
     return (
@@ -69,7 +71,7 @@ export default function Navbar() {
                                     {isAuthenticated ? (
                                         <button
                                             className="btn btn-link nav-link"
-                                            onClick={() => handleNavigation('/add')}
+                                            onClick={() => handleMobileNavigation('/add')}
                                         >
                                             Add Todos
                                         </button>
@@ -81,7 +83,7 @@ export default function Navbar() {
                                     {isAuthenticated ? (
                                         <button
                                             className="btn btn-link nav-link"
-                                            onClick={() => handleNavigation('/todos')}
+                                            onClick={() => handleMobileNavigation('/todos')}
                                         >
                                             My Todos
                                         </button>
@@ -93,7 +95,7 @@ export default function Navbar() {
                                     {isAuthenticated ? (
                                         <button
                                             className="btn btn-link nav-link"
-                                            onClick={() => handleNavigation('/upload')}
+                                            onClick={() => handleMobileNavigation('/upload')}
                                         >
                                             Upload
                                         </button>
@@ -102,12 +104,12 @@ export default function Navbar() {
                                     )}
                                 </li>
                             </ul>
-                            <div className="d-flex flex-column align-items-start">
+                            <div className="d-flex flex-row align-items-center">
                                 {!isAuthenticated ? (
                                     <>
                                         <Link
                                             to="/authentication/login"
-                                            className="btn btn-success text-white mb-2 button-size"
+                                            className="btn btn-success text-white me-2 button-size"
                                             style={{ fontWeight: 'bolder' }}
                                         >
                                             Login
@@ -122,23 +124,21 @@ export default function Navbar() {
                                     </>
                                 ) : (
                                     <>
-                                        <h5 className="text-white me-0 mb-2">{user.email}</h5>
-                                        <div className="d-flex flex-column">
-                                            <Link
-                                                to="/dashboard"
-                                                className="btn btn-success fs-6 mb-2 text-white"
-                                                style={{ fontWeight: 'bolder' }}
-                                            >
-                                                Dashboard
-                                            </Link>
-                                            <button
-                                                className="btn btn-danger btn-sm text-white"
-                                                style={{ fontWeight: 'bolder' }}
-                                                onClick={handleLogout}
-                                            >
-                                                Logout
-                                            </button>
-                                        </div>
+                                        <h5 className="text-white me-3">{user.email}</h5>
+                                        <Link
+                                            to="/dashboard"
+                                            className="btn btn-success fs-6 me-2 text-white"
+                                            style={{ fontWeight: 'bolder' }}
+                                        >
+                                            Dashboard
+                                        </Link>
+                                        <button
+                                            className="btn btn-danger btn-sm text-white"
+                                            style={{ fontWeight: 'bolder', padding: '8px 28px' }}
+                                            onClick={handleLogout}
+                                        >
+                                            Logout
+                                        </button>
                                     </>
                                 )}
                             </div>
@@ -153,14 +153,23 @@ export default function Navbar() {
                 }
 
                 @media (max-width: 768px) {
-                    .d-flex.flex-column {
+                    .offcanvas-body ul.navbar-nav {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+
+                    .offcanvas-body .d-flex {
+                        flex-direction: column;
                         align-items: flex-start;
                         width: 100%;
                     }
-                    .d-flex.flex-column a,
-                    .d-flex.flex-column button {
+
+                    .offcanvas-body a,
+                    .offcanvas-body button {
                         width: 100%;
                         text-align: center;
+                        margin-bottom: 8px;
                     }
                 }
             `}</style>
