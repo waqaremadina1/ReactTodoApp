@@ -248,53 +248,63 @@ export default function Todos() {
 
             <style jsx>{`
     .showTodos .card {
-        max-width: 1100px;
+        max-width: 1100px; /* Fixed width for desktop */
+        max-height: 500px; /* Fixed height for desktop */
         margin: 0 auto;
         margin-bottom: 30px;
         padding: 10px 15px;
-        overflow-x: auto;
+        overflow: hidden; /* Prevent scroll bar and hide overflow */
+        word-wrap: break-word; /* Break long words into multiple lines */
+        white-space: normal; /* Allow text wrapping */
     }
 
     table {
         width: 100%;
-        overflow-x: auto;
         display: block;
+        overflow-x: hidden; /* No scroll bar on desktop */
+        word-wrap: break-word;
+        white-space: normal; /* Allow text to wrap */
     }
 
     th, td {
-        white-space: nowrap;
+        white-space: normal; /* Allow cell content to wrap */
+        word-wrap: break-word;
     }
 
+    /* Mobile Devices (max-width: 768px) */
     @media (max-width: 768px) {
         .showTodos .card {
-            max-width: 100%;
-            padding: 10px 15px;
-        }
-
-        .modal-body input, .modal-body textarea {
-            font-size: 14px;
-            padding: 8px;
-        }
-
-        .modal-footer button {
-            font-size: 14px;
+            overflow-x: auto; /* Enable horizontal scrolling on mobile */
+            max-height: unset; /* Remove fixed height for mobile */
+            white-space: nowrap; /* Prevent text wrapping */
         }
 
         table {
-            font-size: 12px;
-        }
-
-        .btn {
-            font-size: 12px;
-            padding: 6px 10px;
-        }
-
-        .modal-dialog {
-            max-width: 95%;
-            margin: 0 auto;
+            overflow-x: auto; /* Enable horizontal scrolling for table */
+            white-space: nowrap; /* Prevent text wrapping in mobile */
         }
     }
+        /* Page scroll bar enable */
+    html, body {
+        overflow: auto; /* Ensure page scroll bar is enabled */
+        height: auto;   /* Allow the page to grow dynamically */
+    }
+
+    /* Optional: Customize scroll bar style (only for modern browsers) */
+    ::-webkit-scrollbar {
+        width: 8px; /* Width of the scroll bar */
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888; /* Scroll bar color */
+        border-radius: 4px; /* Rounded edges */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Scroll bar color on hover */
+    }
 `}</style>
+
 
         </>
     )
